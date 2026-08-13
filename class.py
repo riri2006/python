@@ -1,31 +1,38 @@
-class Kapil:
-    def __init__(self, name):
-    
-        self.name = name
-        self.him("Sharda sasumummaa", "Praveen sasurpapa", "Khushi", "Poornima", "Gopal taujiii", "Manju mosii")
+class Shop:
 
-    def me(self, name1):
-        self.name1 = name1
-        print("My Name: ", self.name1)
+    def __init__(self, shop_name):
+        self.shop_name = shop_name
 
-    def him(self, mom, dad, sis1, sis2, tauji, taiji):
-        self.mom = mom
-        self.tauji = tauji
-        self.taiji = taiji
-        self.dad = dad
-        self.sis1 = sis1
-        self.sis2 = sis2
-        print("His Name: ", self.name)
-        print("Mother is law's Name: ", self.mom)
-        print("Father in law's Name: ", self.dad)
-        print("Sister in law's Name: ", self.sis1)
-        print("Sister in law's Name: ", self.sis2)
-        print("Tauuji in law's Name: ", self.tauji)
-        print("Taiji in law's Name: ", self.taiji)
+        self.items(
+            "Laptop",
+            "Mobile",
+            "Headphones",
+            "Keyboard",
+            "Mouse",
+            "Monitor"
+        )
 
-object = Kapil("Vedant")
-object.me("R Kapil")
+    def owner(self, owner_name):
+        self.owner_name = owner_name
+        print("Owner Name:", self.owner_name)
 
-                
-        
-        
+    def items(self, item1, item2, item3, item4, item5, item6):
+        self.item1 = item1
+        self.item2 = item2
+        self.item3 = item3
+        self.item4 = item4
+        self.item5 = item5
+        self.item6 = item6
+
+        print("Shop Name:", self.shop_name)
+        print("Item 1:", self.item1)
+        print("Item 2:", self.item2)
+        print("Item 3:", self.item3)
+        print("Item 4:", self.item4)
+        print("Item 5:", self.item5)
+        print("Item 6:", self.item6)
+
+
+object = Shop("Tech World")
+
+object.owner("Rahul")
