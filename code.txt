@@ -1,0 +1,18 @@
+print("This is my id")
+def id(name, roll, age):
+    print("Name: ", name)
+    print("Roll no.: ", roll)
+    print("Age: ", age)
+try:
+    name = ((input("Enter your name: ")), np.astype==str)
+    roll= int(input("Enter your roll number: "))
+    age= int(input("Enter your age: "))
+    id(name,roll,age)
+except (ValueError, NameError):
+    print("Enter valid information..")
+
+
+
+
+
+
