@@ -4,6 +4,9 @@ load_dotenv()
 from langchain_groq import ChatGroq
 llm = ChatGroq(model = "openai/gpt-oss-20b")
 
-user = input("please ask your question: ")
-data = llm.invoke(user)
-print(data.content)
+while True :
+    user = input("please ask your question: ")
+    data = llm.invoke(user)
+    print(data.content)
+
+    
