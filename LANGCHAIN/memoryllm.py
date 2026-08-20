@@ -1,26 +1,26 @@
 from dotenv import load_dotenv
 load_dotenv()
-
 from langchain_groq import ChatGroq
 llm = ChatGroq(model="openai/gpt-oss-20b")
 
-memory = [] #empty list hoti to store past data memory as a notebook
+memory = []
 
 while True:
-    query = input("Ask :")
+    query = input("ASK: ")
 
+    if query in ["exit", "terminate"]:
+        break
 
     memory.append({
         "role" : "user",
         "content" : query
     })
 
-    response = llm.invoke(memory) #memory as a notebook taki past data aur context k liye samajh aaye assistant ko
+    response = llm.invoke(memory)
 
-    print("ASSISTANT: ", response.content)
+    print("AI RESPONSE: ", response.content)
 
     memory.append({
         "role" : "assistant",
         "content" : response.content
     })
-
