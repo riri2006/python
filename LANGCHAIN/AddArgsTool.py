@@ -10,10 +10,10 @@ llm = ChatGroq(model = "openai/gpt-oss-20b")
 memory = MemorySaver()
 
 @tool
-def add(*numbers : int):
-    """Adding numbers"""
+def add(numbers: list[int]) -> int: # add(numbers=[10, 20])  # ❌ , add(10, 20)  # ✅
+    """Add a list of numbers."""
     return sum(numbers)
-
+    
 agent = create_agent(
     model = llm,
     checkpointer= memory,
