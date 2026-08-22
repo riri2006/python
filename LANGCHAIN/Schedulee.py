@@ -12,11 +12,15 @@ schedule =[]
 @tool
 def add_schedule(hours: str, subject:str):
     """Add the hours and work to do"""
-    schedule.append({
-        "hours": hours,
-        "subject": subject
-    })
-    return "Added to schedule.." 
+
+    if (hours>"24"):
+        return "this is beyond time limit"
+    else:
+        schedule.append({
+            "hours": hours,
+            "subject": subject
+        })
+        return "Added to schedule.." 
 
 @tool
 def show_schedule():
