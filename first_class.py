@@ -1,55 +1,55 @@
-# # def greet():
-# #     print("Hello!")
+def greet():
+    print("Hello!")
 
-# # call = greet
-# # call()
-
-
-# # def student():
-# #     print("This is student")
-
-# # def call(func):
-# #     func()
-
-# # abc = call
-# # abc(student)
-
-# # def mult(a,b):
-# #     return a*b
-
-# # def call(fun,x,y):
-# #     return fun(x,y)
-
-# # result = call(mult,10,2)
-# # print(result)
+call = greet
+call()
 
 
-# def mult(a,b):
-#     print("product: ", a*b)
+def student():
+    print("This is student")
 
-# def call(fun,x,y):
-#     return(fun(x,y))
+def call(func):
+    func()
 
-# result = call(mult,10,2)
-# result
+abc = call
+abc(student)
 
+def mult(a,b):
+    return a*b
 
+def call(fun,x,y):
+    return fun(x,y)
 
-# class Calculator:
-
-#     def __init__(self, a, b):
-#         self.a = a
-#         self.b = b
-#         print("hello")    
-
-
-# def add(calc: Calculator):
-#     print(calc.a + calc.b)
+result = call(mult,10,2)
+print(result)
 
 
-# c1 = Calculator(10, 20)
+def mult(a,b):
+    print("product: ", a*b)
 
-# add(c1)
+def call(fun,x,y):
+    return(fun(x,y))
+
+result = call(mult,10,2)
+result
+
+
+
+class Calculator:
+
+    def __init__(self, a, b):
+        self.a = a
+        self.b = b
+        print("hello")    
+
+
+def add(calc: Calculator):
+    print(calc.a + calc.b)
+
+
+c1 = Calculator(10, 20)
+
+add(c1)
 
 
 
