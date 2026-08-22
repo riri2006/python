@@ -5,44 +5,52 @@ from langchain.tools import tool
 from langchain.agents import create_agent
 from langgraph.checkpoint.memory import MemorySaver
 
-llm = ChatGroq(model="openai/gpt-oss-20b")
-memory = MemorySaver()
 schedule =[]
 
-@tool
-def add_schedule(hours: str, subject:str):
-    """Add the hours and work to do"""
+class Assistant :
+    def __init__(self,name,ai):
+        self.name= name
+        self.ai = ai
 
-    if (hours>"24"):
-        return "this is beyond time limit"
-    else:
-        schedule.append({
-            "hours": hours,
-            "subject": subject
-        })
-        return "Added to schedule.." 
+    def agent(self):
+        llm = ChatGroq(model="openai/gpt-oss-20b")
+        memory = MemorySaver()
+        @tool
+        def add_schedule(hours: str, subject:str):
+            """Add the hours and work to do"""
 
-@tool
-def show_schedule():
-    """show the schedule.."""
-    return schedule
+            schedule.append({
+                "hours": hours,
+                "subject": subject
+            })
+            return "Added to schedule.." 
 
-agent = create_agent(
-    model = llm,
-    checkpointer= memory,
-    tools=[add_schedule, show_schedule]
-)
+        @tool
+        def show_schedule():
+            """show the schedule.."""
+            return schedule
 
-configuration = {"configurable":{"thread_id":"1"}}
+        agent = create_agent(
+            model = llm,
+            checkpointer= memory,
+            tools=[add_schedule, show_schedule]
+        )
 
-while True:
-    query = input("You: ")
-    if query in ["quit", "terminate", "exit"]:
-        print("TERMINATING THE CONVERSATION.. THANK YOU AND HAVE A GOOD DAY")
-        break
+        configuration = {"configurable":{"thread_id":"1"}}
 
-    response =  agent.invoke({
-        "messages":[{"role":"user", "content":query}]
-    }, config=configuration)
+        while True:
+            query = input(f"{self.name}: ")
+            if query in ["quit", "terminate", "exit"]:
+                print("TERMINATING THE CONVERSATION.. THANK YOU AND HAVE A GOOD DAY")
+                break
 
-    print("Study Partner: ", response['messages'][-1].content)
+            response =  agent.invoke({
+                "messages":[{"role":"user", "content":query}]
+            }, config=configuration)
+
+            print(f"{self.ai}: ", response['messages'][-1].content)
+
+user = input("Enter your name: ")
+ai = input("What do you want to call your study assistant? ")
+a1 = Assistant(user, ai)
+a1.agent()
