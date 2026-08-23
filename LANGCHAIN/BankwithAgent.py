@@ -13,13 +13,14 @@ balance =  current()
 
 @tool
 def withdraw(amount : str):
-    global balance
-    
     """WITHDRAW MONEY FROM BANK ACCOUNT """
-    if(amount > balance):
+
+    global balance
+
+    if(int(amount) > balance):
         return"INSUFFICIENT BALANCE"
     else:
-        balance -= amount
+        balance -= int(amount)
         return "WITHDRAWN SUCCESSFULLY"
 
 @tool
@@ -27,11 +28,22 @@ def current_balance():
     """Shows current balance of user"""
     return balance
 
+@tool
+def Deposit(amount:str):
+    """Deposits money in bank account"""
+    global balance 
+    balance += int(amount)
+    return "Deposited successfully"
+
+
+
 agent = create_agent(
     model= llm,
     checkpointer= memory,
-    tools=[withdraw, current_balance]
+    tools=[withdraw, current_balance, Deposit]
 )
+
+
 config = {"configurable": {"thread_id":"1"}}
 
 while True:
