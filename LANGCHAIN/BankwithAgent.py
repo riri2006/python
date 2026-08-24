@@ -11,29 +11,41 @@ memory = MemorySaver()
 
 balance =  current()
 
+pinn = "1234"
 @tool
-def withdraw(amount : str):
+def withdraw(amount : str, pin:str):
     """WITHDRAW MONEY FROM BANK ACCOUNT """
 
     global balance
-
-    if(int(amount) > balance):
-        return"INSUFFICIENT BALANCE"
+    if(pin==pinn):
+        if(int(amount) > balance):
+            return"INSUFFICIENT BALANCE"
+        else:
+            balance -= int(amount)
+            return "WITHDRAWN SUCCESSFULLY"
     else:
-        balance -= int(amount)
-        return "WITHDRAWN SUCCESSFULLY"
+        return "invalid credentials"
 
 @tool
-def current_balance():
-    """Shows current balance of user"""
-    return balance
+def current_balance(pin:str):
+    """Shows current balance of user after checking whetere the pin is matching or not"""
+    if (pin==pinn):
+        return balance
+    else :
+        return "INVALID CREDENTIALS"
 
 @tool
-def Deposit(amount:str):
+def Deposit(amount:str, pin:str):
     """Deposits money in bank account"""
     global balance 
-    balance += int(amount)
-    return "Deposited successfully"
+    if (pin == pinn):
+        balance += int(amount)
+        return "Deposited successfully"
+    else: 
+        return "invalid credentials"
+        
+    
+
 
 
 

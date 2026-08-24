@@ -54,3 +54,4 @@ user = input("Enter your name: ")
 ai = input("What do you want to call your study assistant? ")
 a1 = Assistant(user, ai)
 a1.agent()
+
