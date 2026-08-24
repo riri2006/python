@@ -14,8 +14,7 @@ balance =  current()
 pinn = "1234"
 @tool
 def withdraw(amount : str, pin:str):
-    """WITHDRAW MONEY FROM BANK ACCOUNT """
-
+    """WITHDRAW MONEY FROM BANK ACCOUNT AFTER CHECKING PIN"""
     global balance
     if(pin==pinn):
         if(int(amount) > balance):
@@ -36,7 +35,7 @@ def current_balance(pin:str):
 
 @tool
 def Deposit(amount:str, pin:str):
-    """Deposits money in bank account"""
+    """Deposits money in bank account ONLY if pin matches """
     global balance 
     if (pin == pinn):
         balance += int(amount)
@@ -44,8 +43,6 @@ def Deposit(amount:str, pin:str):
     else: 
         return "invalid credentials"
         
-    
-
 
 
 
@@ -61,7 +58,7 @@ config = {"configurable": {"thread_id":"1"}}
 while True:
     query = input("YOU: ")
     if query in ["exit","terminate","quit"]:
-        print("TERMINATING CONVERSATION..THNAK YOU")
+        print("TERMINATING CONVERSATION..THANK YOU")
         break
     response = agent.invoke({
         "messages":[{"role":"user", "content":query}]
