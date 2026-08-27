@@ -32,7 +32,7 @@ embedding = OllamaEmbeddings( model="nomic-embed-text:latest")
 vdb = Chroma.from_documents(
     documents=chunk,
     embedding=embedding,
-    persist_directory="./rk_db"
+    persist_directory="./rv_db"
 )
 
 while True:
