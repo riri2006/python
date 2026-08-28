@@ -1,10 +1,11 @@
+from llama_parse import LlamaParse
 from langchain_groq import ChatGroq
-from langchain_community.document_loaders import UnstructuredPowerPointLoader, PyPDFLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_ollama import OllamaEmbeddings
 from langchain_chroma import Chroma
 from langgraph.checkpoint.memory import MemorySaver
 from langchain.agents import create_agent
+import os
 from dotenv import load_dotenv
 load_dotenv()
 
@@ -21,15 +22,19 @@ class Assistant:
             checkpointer=memory
         )
 
+        parser= LlamaParse(
+            api_key= os.getenv("LLAMA_API_KEY"),
+            result_type= "markdown"
+
+        )
+
         choose = input("What do u want to upload?\n1.PDF\n2.PPt:\n")
         if(choose=="1"):
             ip = input("Enter your file path: ")
-            data = PyPDFLoader(ip)
-            doc = data.load()
+            doc = parser.load_data(ip)
         elif(choose=="2"):
             ip = input("Enter your file path: ")
-            data = UnstructuredPowerPointLoader(ip)
-            doc = data.load()
+            doc = parser.load_data(ip)
 
         else:
             print("INVALID OPTION")
