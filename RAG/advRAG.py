@@ -1,11 +1,12 @@
 from langchain_groq import ChatGroq
-from llama_parse import LlamaParse
+from llama_cloud import LlamaCloud
 from langchain_core.documents import Document
 from langchain_experimental.text_splitter import SemanticChunker
 from langchain_ollama import OllamaEmbeddings
 from langchain_chroma import Chroma
 from langchain.agents import create_agent
 from langgraph.checkpoint.memory import MemorySaver
+from pathlib import Path
 import os
 from dotenv import load_dotenv
 load_dotenv()
@@ -19,16 +20,31 @@ agent = create_agent(
 
 path = input("Enter the path of file: ")
 
-parser = LlamaParse(
-    api_key=os.getenv("LLAMA_API_KEY"),
-    result_type="markdown"
-)
-pdoc = parser.load_data(path)
+client = LlamaCloud(
+    api_key=os.getenv("LLAMA_CLOUD_API_KEY"),
+    timeout=120.0)
+
+file = client.files.create(
+    file=Path(path),
+    purpose="parse")
+
+result = client.parsing.create(
+    tier="agentic",
+    version="latest",
+    file_id=file.id)
+
+parsed = client.parsing.get(
+    result.id,
+    expand="markdown" )
+
 documents = [
-    Document(page_content=doc.text)
-    for doc in pdoc]
+    Document(
+        page_content=doc.markdown)
+    for doc in parsed.markdown.pages]
+
 embedding = OllamaEmbeddings(model="nomic-embed-text:latest")
 splitter = SemanticChunker(embeddings=embedding)
+
 chunks = splitter.split_documents(documents)
 
 vdb = Chroma.from_documents(
@@ -48,9 +64,8 @@ while True:
         k=5
     )
     context = "\n\n".join(
-                    doc.page_content
-                    for doc in response
-                    )
+            doc.page_content
+            for doc in response)
                 
     prompt = f"""
     You are a helpful  assistant.
