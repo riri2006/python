@@ -42,6 +42,9 @@ documents = [
         page_content=doc.markdown)
     for doc in parsed.markdown.pages]
 
+
+
+
 embedding = OllamaEmbeddings(model="nomic-embed-text:latest")
 splitter = SemanticChunker(embeddings=embedding)
 
