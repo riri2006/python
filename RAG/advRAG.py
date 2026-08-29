@@ -24,18 +24,59 @@ parser = LlamaParse(
     result_type="markdown"
 )
 pdoc = parser.load_data(path)
-for doc in pdoc:
-    documents =[
-        Document(
-            page_content= doc.text
-            # metadata={"source":"abc"}
-        )
-    ]
-
+documents = [
+    Document(page_content=doc.text)
+    for doc in pdoc]
 embedding = OllamaEmbeddings(model="nomic-embed-text:latest")
-
 splitter = SemanticChunker(embeddings=embedding)
-
 chunks = splitter.split_documents(documents)
-for chunk in chunks:
-    print("Chunks:",chunk.page_content)
+
+vdb = Chroma.from_documents(
+    documents=chunks,
+    embedding= embedding,
+    persist_directory="./advncrag_db"
+)
+
+while True:
+    query = input("\nYou: ")
+    if query.lower() in ["exit", "quit", "terminate"]:
+        print("Terminating conversation.. Thank you")
+        break
+
+    response = vdb.similarity_search(
+        query= query,
+        k=5
+    )
+    context = "\n\n".join(
+                    doc.page_content
+                    for doc in response
+                    )
+                
+    prompt = f"""
+    You are a helpful  assistant.
+    You answer questions about the uploaded document.
+    Use the document context below when it is relevant.
+    
+    Document context:
+    {context}
+    
+    Current question:
+    {query}
+    
+    Rules:
+    1. If the answer is available in the document context, answer using the document.
+    2. If the exact answer is NOT available in the document, but the question
+    is related to the same topic, you may answer using your general knowledge.
+    3. If the question is completely unrelated to the document/topic, say:
+    
+    "I could not find this information."
+    
+    Give simple and clear answers suitable for the person."""
+
+    result = agent.invoke({
+            "messages":[{"role":"user","content":prompt}]
+    }, config={"configurable":{"thread_id":"1"}})
+
+    print("Assistant: ", result['messages'][-1].content)
+    
+    
