@@ -1,4 +1,4 @@
-from llama_parse import LlamaParse
+from langchain_community.document_loaders import PyPDFLoader , UnstructuredPowerPointLoader
 from langchain_groq import ChatGroq
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_ollama import OllamaEmbeddings
@@ -21,20 +21,15 @@ class Assistant:
             model=llm,
             checkpointer=memory
         )
-
-        parser= LlamaParse(
-            api_key= os.getenv("LLAMA_API_KEY"),
-            result_type= "markdown"
-
-        )
-
         choose = input("What do u want to upload?\n1.PDF\n2.PPt:\n")
         if(choose=="1"):
             ip = input("Enter your file path: ")
-            doc = parser.load_data(ip)
+            data = PyPDFLoader(ip)
+            doc = data.load()
         elif(choose=="2"):
             ip = input("Enter your file path: ")
-            doc = parser.load_data(ip)
+            data = UnstructuredPowerPointLoader(ip)
+            doc = data.load()
 
         else:
             print("INVALID OPTION")
@@ -43,7 +38,12 @@ class Assistant:
             chunk_size=500,
             chunk_overlap=100
         )
-        chunks= splitter.split_documents(doc)
+        # chunks= splitter.split_documents(doc)
+        chunks = splitter.split_documents(doc)
+
+        # print("Documents:", len(doc))
+        # print("Chunks:", len(chunks))
+        # print("First chunk:", chunks[0].page_content[:200])
 
         embedding = OllamaEmbeddings(model="nomic-embed-text:latest")
 
