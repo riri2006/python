@@ -34,3 +34,4 @@ splitter = SemanticChunker(embeddings=embedding)
 chunks = splitter.split_documents(documents)
 for chunk in chunks:
     print(chunk)
+    
