@@ -20,6 +20,7 @@ agent = create_agent(
 
 path = input("Enter the path of file: ")
 
+#----------------------------------------CLOUD----------------------------------------------
 client = LlamaCloud(
     api_key=os.getenv("LLAMA_CLOUD_API_KEY"),
     timeout=120.0)
@@ -37,12 +38,17 @@ parsed = client.parsing.get(
     result.id,
     expand="markdown" )
 
-documents = [
-    Document(
-        page_content=doc.markdown)
-    for doc in parsed.markdown.pages]
+# print("Parsed:", parsed)
+# print("Markdown:", parsed.markdown)
 
-
+documents = []
+for doc in parsed.markdown.pages:
+    documents.append(
+        Document(
+            page_content=doc.markdown,
+            metadata={"source":path}
+        )
+    )
 
 
 embedding = OllamaEmbeddings(model="nomic-embed-text:latest")
@@ -64,7 +70,8 @@ while True:
 
     response = vdb.similarity_search(
         query= query,
-        k=5
+        k=5,
+        filter={"source":path}
     )
     context = "\n\n".join(
             doc.page_content
@@ -88,6 +95,10 @@ while True:
         Rules:
 
         1. If the answer is available in the document text or context, answer using it.
+        and  If the user asks "what does it mean?", "explain this",
+        "what is the message?", or asks for interpretation,
+        explain the meaning of the text or visual content
+        in simple language.
 
         2. If the question is about visual content in the uploaded document,
         such as:
@@ -123,12 +134,17 @@ while True:
         something from the available document content, clearly say that you
         cannot determine it.
 
-        8. Give simple, clear, and direct answers.
+        8. Do not mention how many times a sentence, paragraph, fact,
+        or piece of information is repeated in the document.
+        Do not discuss duplicate or repeated content unless the user
+        specifically asks about repetition or frequency.
+
+        9. Give simple, clear, and direct answers.
         """
     result = agent.invoke({
             "messages":[{"role":"user","content":prompt}]
     }, config={"configurable":{"thread_id":"1"}})
 
-    print("Assistant: ", result['messages'][-1].content)
+    print("\nAssistant: ", result['messages'][-1].content)
     
     
