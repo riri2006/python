@@ -20,4 +20,13 @@ try:
 except :
     print("Invalid data type")
 
+#optional
+class Employee(BaseModel):
+    name: str
+    age: int
+    salary: Optional[float] = None
 
+emp1 = Employee(name="Riddhi", age=20, salary=95000)
+emp2 = Employee(name="Kashish", age=25)
+print(emp1)
+print(emp2)
