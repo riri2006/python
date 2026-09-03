@@ -1,4 +1,4 @@
-from pydantic import BaseModel, StrictInt
+from pydantic import BaseModel, StrictInt, StrictStr
 from typing import Optional
 
 #Int me "" string dala still it typcasted that as int
@@ -30,3 +30,15 @@ emp1 = Employee(name="Riddhi", age=20, salary=95000)
 emp2 = Employee(name="Kashish", age=25)
 print(emp1)
 print(emp2)
+
+#LIST INPUT - if u write tuple that will also bhi typecasted as list
+
+class Classroom(BaseModel):
+    floor: int
+    children: list[StrictStr]
+
+cls1 = Classroom(floor=1,children=["Riddhi","Vedant","Kashish"])
+print(cls1)
+cls2 =Classroom(floor=2, children=["Riddhi", "123"])
+print(cls2)
+
